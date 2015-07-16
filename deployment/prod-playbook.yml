@@ -1,0 +1,38 @@
+---
+- hosts: prod-servers
+  remote_user: root
+
+  tasks:
+    - name: Install Java 1.7
+      yum: name=java-1.7.0-openjdk state=present
+
+    # - name: add group "tomcat"
+    #   group: name=tomcat
+
+    # - name: add user "tomcat"
+    #   user: name=tomcat group=tomcat
+
+    - name: Download Tomcat
+      get_url: url=http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz dest=/opt/apache-tomcat-7.0.61.tar.gz
+
+    - name: Extract archive
+      unarchive: src=/opt/apache-tomcat-7.0.61.tar.gz dest=/opt copy=no
+      # unarchive: src=/opt/apache-tomcat-7.0.61.tar.gz dest=/opt copy=no owner=tomcat group=tomcat
+
+    - name: Symlink install directory
+      file: src=/opt/apache-tomcat-7.0.61 path=/opt/apache-tomcat state=link
+
+    - name: Install Tomcat init script
+      copy: src=files/tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
+
+    - name: Start Tomcat
+      service: name=tomcat state=started enabled=yes
+
+    # - name: Download Artifact
+    #   get_url: url={{artifact_url}} dest=/opt/apache-tomcat/webapps/sample.war force=yes
+    #   notify: restart tomcat
+
+  # handlers:
+  #   - name: restart tomcat 
+  #     service: name=tomcat state=restarted
+

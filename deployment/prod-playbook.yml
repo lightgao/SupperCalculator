@@ -13,14 +13,14 @@
     #   user: name=tomcat group=tomcat
 
     - name: Download Tomcat
-      get_url: url=http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz dest=/opt/apache-tomcat-7.0.61.tar.gz
+      get_url: url=http://mirrors.cnnic.cn/apache/tomcat/tomcat-7/v7.0.63/bin/apache-tomcat-7.0.63.tar.gz dest=/opt/apache-tomcat-7.0.63.tar.gz
 
     - name: Extract archive
-      unarchive: src=/opt/apache-tomcat-7.0.61.tar.gz dest=/opt copy=no
-      # unarchive: src=/opt/apache-tomcat-7.0.61.tar.gz dest=/opt copy=no owner=tomcat group=tomcat
+      unarchive: src=/opt/apache-tomcat-7.0.63.tar.gz dest=/opt copy=no
+      # unarchive: src=/opt/apache-tomcat-7.0.63.tar.gz dest=/opt copy=no owner=tomcat group=tomcat
 
     - name: Symlink install directory
-      file: src=/opt/apache-tomcat-7.0.61 path=/opt/apache-tomcat state=link
+      file: src=/opt/apache-tomcat-7.0.63 path=/opt/apache-tomcat state=link
 
     - name: Install Tomcat init script
       copy: src=files/tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755

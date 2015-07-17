@@ -3,7 +3,7 @@
   remote_user: root
 
   tasks:
-    - name: Install Java 1.7
+    - name: Install java-1.7.0-openjdk
       yum: name=java-1.7.0-openjdk state=present
 
     # - name: add group "tomcat"

@@ -15,6 +15,12 @@
     - name: Download Tomcat
       get_url: url=http://mirrors.cnnic.cn/apache/tomcat/tomcat-7/v7.0.63/bin/apache-tomcat-7.0.63.tar.gz dest=/opt/apache-tomcat-7.0.63.tar.gz
 
+    - stat: path=/etc/init.d/tomcat
+      register: init_st
+    - name: Stop Previous Tomcat service firstly
+      service: name=tomcat state=stoped
+      when: init_st.stat.exists == 'true'
+
     - name: Extract archive
       unarchive: src=/opt/apache-tomcat-7.0.63.tar.gz dest=/opt copy=no
       # unarchive: src=/opt/apache-tomcat-7.0.63.tar.gz dest=/opt copy=no owner=tomcat group=tomcat
@@ -26,7 +32,7 @@
       copy: src=files/tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
 
     - name: Start Tomcat
-      service: name=tomcat state=restarted enabled=yes
+      service: name=tomcat state=started enabled=yes
 
     # - name: Download Artifact
     #   get_url: url={{artifact_url}} dest=/opt/apache-tomcat/webapps/sample.war force=yes

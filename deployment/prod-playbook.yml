@@ -21,6 +21,12 @@
     - name: Install Tomcat Init Script
       copy: src=files/tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
 
+    - stat: path=/opt/apache-tomcat
+      register: tomcat_softlink
+    - name: Stop previous running Tomcat server
+      service: name=tomcat state=stopped
+      when: tomcat_softlink.stat.exists == true
+
     - name: Symlink tomcat install directory
       file: src=/opt/apache-tomcat-{{tomcat_version}} path=/opt/apache-tomcat state=link
 
@@ -29,3 +35,4 @@
 
     - name: Push Artifact to Remote Host
       copy: src=/home/devops/.jenkins/jobs/temp/workspace/build/libs/workspace.war dest=/opt/apache-tomcat/webapps/SuperCalculator.war force=yes
+

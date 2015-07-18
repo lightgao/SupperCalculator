@@ -1,2 +1,2 @@
 [prod-servers]
-server1 ansible_ssh_host=54.223.168.107 ansible_ssh_port=21722 ansible_ssh_user=root
+server1 ansible_ssh_host=54.223.168.107 ansible_ssh_port=21722 ansible_ssh_user=root ansible_ssh_pass=rootme

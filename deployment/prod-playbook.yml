@@ -22,4 +22,4 @@
       service: name=tomcat state=started enabled=yes
 
     - name: Push Artifact to Remote Host
-      copy: src=/home/devops/.jenkins/jobs/mybuild/workspace/build/libs/SuperCalculator.war dest=/opt/apache-tomcat/webapps/SuperCalculator.war force=yes
+      copy: src=/home/devops/.jenkins/jobs/temp/workspace/build/libs/workspace.war dest=/opt/apache-tomcat/webapps/SuperCalculator.war force=yes

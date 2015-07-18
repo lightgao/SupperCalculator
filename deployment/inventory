@@ -1,6 +1,2 @@
 [prod-servers]
-
-# server1 ansible_ssh_host=192.168.33.10 ansible_ssh_port=22 ansible_ssh_private_key_file=/Users/gl/.vagrant.d/insecure_private_key ansible_ssh_user=vagrant artifact_url=http://10.0.2.2:8000/sample.war
-
-server1 ansible_ssh_host=54.223.168.107 ansible_ssh_port=21722 ansible_ssh_user=root artifact_url=http://10.0.2.2:8000/sample.war
-# ssh root@54.223.168.107 -p 21722
+server1 ansible_ssh_host=54.223.168.107 ansible_ssh_port=21722 ansible_ssh_user=root

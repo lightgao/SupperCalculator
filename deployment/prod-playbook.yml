@@ -2,48 +2,24 @@
 - hosts: prod-servers
   remote_user: root
 
-  vars:
-    tomcat_package_link: http://mirrors.cnnic.cn/apache/tomcat/tomcat-7/v7.0.63/bin/apache-tomcat-7.0.63.tar.gz
-    tomcat_version: 7.0.63
-    # tomcat_package_link: http://mirrors.cnnic.cn/apache/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz
-    # tomcat_version: 8.0.24
-
   tasks:
     - name: Install java-1.7.0-openjdk
       yum: name=java-1.7.0-openjdk state=present
 
-    # - name: add group "tomcat"
-    #   group: name=tomcat
-
-    # - name: add user "tomcat"
-    #   user: name=tomcat group=tomcat
-
     - name: Download Tomcat Package
-      get_url: url={{tomcat_package_link}} dest=/opt/apache-tomcat-{{tomcat_version}}.tar.gz
+      get_url: url=http://mirrors.cnnic.cn/apache/tomcat/tomcat-7/v7.0.63/bin/apache-tomcat-7.0.63.tar.gz dest=/opt/apache-tomcat-7.0.63.tar.gz
 
     - name: Extract Tomcat Package
-      unarchive: src=/opt/apache-tomcat-{{tomcat_version}}.tar.gz dest=/opt copy=no # owner=tomcat group=tomcat
+      unarchive: src=/opt/apache-tomcat-7.0.63.tar.gz dest=/opt copy=no # owner=tomcat group=tomcat
 
     - name: Install Tomcat Init Script
       copy: src=files/tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
 
-    - stat: path=/opt/apache-tomcat
-      register: tomcat_softlink
-    - name: Stop previous running Tomcat server
-      service: name=tomcat state=stopped
-      when: tomcat_softlink.stat.exists == true
-
     - name: Symlink tomcat install directory
-      file: src=/opt/apache-tomcat-{{tomcat_version}} path=/opt/apache-tomcat state=link
+      file: src=/opt/apache-tomcat-7.0.63 path=/opt/apache-tomcat state=link
 
     - name: Start Tomcat
       service: name=tomcat state=started enabled=yes
 
-    # - name: Download Artifact
-    #   get_url: url={{artifact_url}} dest=/opt/apache-tomcat/webapps/sample.war force=yes
-    #   notify: restart tomcat
-
-  # handlers:
-  #   - name: restart tomcat 
-  #     service: name=tomcat state=restarted
-
+    - name: Push Artifact to Remote Host
+      copy: src=/home/devops/.jenkins/jobs/mybuild/workspace/build/libs/SuperCalculator.war dest=/opt/apache-tomcat/webapps/SuperCalculator.war force=yes
